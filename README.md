@@ -2,11 +2,13 @@
 
 Disk Jockey is a Python tool to make it easier to imagize and preserve media such as floppy disks and optical media. Disk Jockey will assign a disk ID to each imagized disk, and store metadata with the image for future reference.
 
+This is a work-in-progress. I do not suggest using it yet.
+
 ## TODO
 
 ### Short-term
 
-- [ ] Imagize media from a block device
+- [x] Imagize media from a block device
 - [ ] Collect metadata
     - [ ] Filesystem type
     - [ ] Label

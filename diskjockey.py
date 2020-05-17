@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import argparse
 import os
@@ -13,14 +13,13 @@ def imagize(device, archive_dir, diskid):
     target_path = target_dir / target_file
     os.mkdir(target_dir)
     try:
-        subprocess.check_call(["pv", f"<{device}", f">{target_path}"])
-    except subprocess.CalledProcessError as image_exc:
-        err = (f"ERROR - return code {image_exc.errcode}" +
-                f"while running {image_exc.cmd}\n" +
-                f"Output: {image_exc.output}")
+        subprocess.check_call(["dd", f"if={device}", f"of={target_path}", "bs=4m"])
+    except subprocess.CalledProcessError as e:
+        err = (f"ERROR - return code {e.returncode} " +
+                f"while running {e.cmd}\n" +
+                f"Output: {e.output}")
         print(err)
-        raise
-
+        raise SystemExit
 
 def main():
     parser = argparse.ArgumentParser()
@@ -31,7 +30,7 @@ def main():
     parser.add_argument('-d', '--dir',
                         help='archive directory. default: current directory')
     args = parser.parse_args()
-    device = args.device if args.device else '/dev/fd0'
+    device = Path(args.device) if args.device else Path('/dev/fd0')
     archive_dir = Path(args.dir) if args.dir else Path('.')
     diskid = args.start if args.start else 1
 
